@@ -28,7 +28,6 @@ class Loan(BaseModel):
     addr_state: str
     dti: float
     delinq_2yrs: float
-    earliest_cr_line: str
     inq_last_6mths: float
     open_acc: float
     pub_rec: float

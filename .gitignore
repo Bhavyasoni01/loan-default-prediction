@@ -35,6 +35,7 @@ mlflow.db
 # Reports / generated outputs
 *.jpg
 *.jpeg
+dockercommands.txt
 
 
 # Docker

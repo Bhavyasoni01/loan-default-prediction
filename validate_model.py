@@ -18,18 +18,6 @@ print(df.columns.to_list())
 
 pipe = joblib.load('saved_model.pkl')
 
-
-
-# 1. Grab the columns the model EXPECTS
-expected_cols = list(pipe.feature_names_in_)
-
-# 2. Grab the columns you are actually GIVING it
-provided_cols = X_val.columns.tolist()
-
-# 3. Find the exact mismatch
-missing_from_X = set(expected_cols) - set(provided_cols)
-print(f"Columns the model wants but X_val doesn't have: {missing_from_X}")
-
 predictions = pipe.predict(X_val)
 prob = pipe.predict_proba(X_val)[:,1]
 
@@ -56,6 +44,6 @@ with open('trained_sample_model.pkl', 'wb') as f:
     joblib.dump(pipe,f)
 
 print("PASSED: ALL METRICS WERE ABOVE THRESHOLD")
-print("MODEL SAVED AS fraud_model.pkl")
+print("MODEL SAVED AS trained_sample_model.pkl")
 
 

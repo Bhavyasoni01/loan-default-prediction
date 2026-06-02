@@ -21,7 +21,9 @@ Built with modern MLOps best practices, the project includes:
 
 * `scikit-learn`
 * `pandas`
+* `xgboost`
 * `numpy`
+* `optuna`
 * `SHAP`
 
 ## MLOps & Tracking
@@ -85,7 +87,7 @@ The project uses historical loan-related data containing borrower financial deta
 ## 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/loan-default-prediction.git
+git clone https://github.com/Bhavyasoni01/loan-default-prediction.git
 cd loan-default-prediction
 ```
 

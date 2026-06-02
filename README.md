@@ -21,7 +21,9 @@ Built with modern MLOps best practices, the project includes:
 
 * `scikit-learn`
 * `pandas`
+* `xgboost`
 * `numpy`
+* `optuna`
 * `SHAP`
 
 ## MLOps & Tracking

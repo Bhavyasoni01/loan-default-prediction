@@ -1,0 +1,62 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# VSCode
+.vscode/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Data
+*.csv
+*.parquet
+*.feather
+
+# Keep sample datasets 
+!sample_dataset.csv
+
+# Models
+*.pkl
+*.joblib
+*.onnx
+
+# MLflow
+mlruns/
+mlflow.db
+
+# Reports / generated outputs
+*.jpg
+*.jpeg
+
+
+# Docker
+.dockerignore
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Secrets / env vars
+.env
+.env.*
+
+# Cache
+.cache/
+.pytest_cache/
+
+# Local ML stuff
+.ML/
+
+# Notebook copies
+*copy.ipynb

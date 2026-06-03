@@ -10,6 +10,13 @@ app = FastAPI()
 
 with open('saved_model.pkl', 'rb') as f:
     model = joblib.load(f)
+
+with open('shap_explainer.pkl','rb') as f:
+    explainer = joblib.load(f)
+
+with open('feature_names.pkl','rb') as f:
+    feature_names = joblib.load(f)
+
 class Loan(BaseModel):
     loan_amnt: float
     funded_amnt: float
@@ -85,6 +92,36 @@ class Loan(BaseModel):
     open_acc_ratio: float
 
 
+def getPrediction(data: pd.DataFrame):
+    probabilty = float(model.predict_proba(data)[0][1])
+    decision = "default" if probabilty >=0.45 else "no_default"
+    return probabilty, decision
+
+def get_reason(data:pd.DataFrame, top_n: int = 5):
+    data_transformed = model[:1].transform(data)
+    data_transformed_df = pd.DataFrame(
+        data_transformed,
+        columns=feature_names
+    )
+
+    shap_val = explainer(data_transformed_df)
+    values = shap_val.values[0]
+
+    feature_impact = list(zip(feature_names, values))
+
+    feature_impact.sort(key=lambda x:abs(x[1]), reverse=True)
+
+    reasons= []
+
+    for feature,impact in feature_impact[:top_n]:
+        reasons.append({
+            "feature":feature,
+            "impact":round(float(impact),4),
+            "direction": "increases default risk" if impact > 0 else "decreases default risk"
+        })
+    return reasons
+
+
 @app.get("/")
 def home():
     return {
@@ -102,13 +139,23 @@ def health():
 @app.post("/predict")
 def predict(loan : Loan):
     data = pd.DataFrame([loan.model_dump()])
-
-    probabilty  = float((model.predict_proba(data)[0][1]))
-    prediction = "default" if probabilty >= 0.45 else "no_default"
+    probability, decision = getPrediction(data)
     timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
 
     return {
-        'prediction':prediction,
-        'default_probability_percent' : round(probabilty * 100,2),
+        'prediction':decision,
+        'default_probability_percent' : round(probability * 100,2),
         'timestamp' : timestamp
+    }
+
+@app.post("/explain")
+def explain(loan:Loan):
+    data=pd.DataFrame([loan.model_dump()])
+    probability, decision = getPrediction(data)
+    reasons = get_reason(data)
+    return{
+        "prediction":decision,
+        "default_probability_percent" : round(probability * 100,2),
+        "top_reasons": reasons,
+        "timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
     }

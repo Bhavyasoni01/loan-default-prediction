@@ -219,9 +219,10 @@ Pipeline configuration:
 
 | Method | Endpoint   | Description                      |
 | ------ | ---------- | -------------------------------- |
+| GET    | `/docs`    | Swagger UI documentation         |
 | GET    | `/health`        | Health check                     |
 | POST   | `/predict` | Predict loan default probability |
-| GET    | `/docs`    | Swagger UI documentation         |
+| POST    | `/explain`    | Get SHAP explainability for the prediction         |
 
 ---
 
